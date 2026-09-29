@@ -1,0 +1,93 @@
+table Dim_Date
+	lineageTag: dc407da0-80d1-4703-a114-785cebf52377
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0a6aaad8-7618-4c3c-b03d-d2d067828888
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 9ac27980-bead-405a-aa62-765c2194725c
+			defaultHierarchy: LocalDateTable_5b4d2ca1-7d43-4c3d-a83c-c14e31a92285.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 1de31f30-9b5c-4521-85a6-96290325511c
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d523683-7321-4528-8e22-54fd83f71ca4
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 92bc032b-0fd8-4477-888f-17ef49817bbb
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 74683611-bd5c-4b64-9ecd-224895c53793
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 168b72b1-fbb5-409d-9381-9cd2adae808a
+		summarizeBy: sum
+		sourceColumn: Week of Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 8c466752-767b-4289-8bd3-185259ccae4f
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = m
+		mode: import
+		source =
+				let
+				    Source = Fact_Sales,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"date"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Duplicates",{{"date", "Date"}}),
+				    #"Inserted Year" = Table.AddColumn(#"Renamed Columns", "Year", each Date.Year([Date]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([Date]), Int64.Type),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Month", "Month Name", each Date.MonthName([Date]), type text),
+				    #"Inserted Day" = Table.AddColumn(#"Inserted Month Name", "Day", each Date.Day([Date]), Int64.Type),
+				    #"Inserted Week of Year" = Table.AddColumn(#"Inserted Day", "Week of Year", each Date.WeekOfYear([Date]), Int64.Type),
+				    #"Inserted Quarter" = Table.AddColumn(#"Inserted Week of Year", "Quarter", each Date.QuarterOfYear([Date]), Int64.Type)
+				in
+				    #"Inserted Quarter"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

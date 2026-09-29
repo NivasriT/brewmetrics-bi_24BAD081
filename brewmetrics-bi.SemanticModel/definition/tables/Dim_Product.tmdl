@@ -1,0 +1,33 @@
+table Dim_Product
+	lineageTag: b6adc27a-4f73-4920-8a78-f78ed7e6df05
+
+	column category
+		dataType: string
+		lineageTag: b34e49a2-6b3b-4155-ad30-5629637e9e8e
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column item
+		dataType: string
+		lineageTag: f9a2fb3c-e63e-42bb-9aa4-42da0a97dcc8
+		summarizeBy: none
+		sourceColumn: item
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Product = m
+		mode: import
+		source =
+				let
+				    Source = Fact_Sales,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"category", "item"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"item"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

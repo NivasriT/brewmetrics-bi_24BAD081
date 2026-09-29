@@ -1,0 +1,100 @@
+table Fact_Sales
+	lineageTag: e4ee49db-0b5a-4e53-a863-234695ac0f74
+
+	column sale_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ad48919b-2bf8-46d8-88e6-0cfa7f237a36
+		summarizeBy: sum
+		sourceColumn: sale_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c890ec18-e2ff-4e70-882e-8f4b3d3382e6
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column city
+		dataType: string
+		lineageTag: 863add57-539c-4df4-ac3b-c27241fdf747
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_format
+		dataType: string
+		lineageTag: 55547de1-cefb-47ef-9932-ae8ed32b2be2
+		summarizeBy: none
+		sourceColumn: store_format
+
+		annotation SummarizationSetBy = Automatic
+
+	column item
+		dataType: string
+		lineageTag: 223b8ea4-e960-4e4f-b67f-8eca39d91f7f
+		summarizeBy: none
+		sourceColumn: item
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 486d0123-2e22-49df-bbbe-9b8a471ddac6
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: int64
+		formatString: 0
+		lineageTag: cae21c0e-3d0d-4ab7-b8f1-6a5205b0cf7f
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_amount
+		dataType: double
+		lineageTag: 0e47b359-ab8d-4764-be8d-cfbcf26a7b64
+		summarizeBy: sum
+		sourceColumn: sales_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column category
+		dataType: string
+		lineageTag: ac8a37fb-7d5e-4cda-8217-9bbe50de1a52
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Sales = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\nivas\OneDrive\Documents\brewmetrics-bi\brewmetrics_sales.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"sale_id", Int64.Type}, {"date", type date}, {"city", type text}, {"store_format", type text}, {"category", type text}, {"item", type text}, {"quantity", Int64.Type}, {"unit_price", Int64.Type}, {"sales_amount", type number}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type","Chenn","Chennai",Replacer.ReplaceText,{"city"}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Replaced Value", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Removed Blank Rows","Chennaiai","Chennai",Replacer.ReplaceText,{"city"})
+				in
+				    #"Replaced Value1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
