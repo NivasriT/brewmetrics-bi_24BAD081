@@ -28,3 +28,5 @@ Average Basket Size = AVERAGE(Fact_Sales[sales_amount])
 **What I changed and why:**
 Copilot averaged row-level sales_amount, which calculates sales per line-item instead of per order basket. I changed it to divide `[Total Sales]` by `DISTINCTCOUNT(Fact_Sales[sale_id])`.
 <!-- Commit checkpoint: Running Total Sales measure verified -->
+
+<!-- Commit checkpoint: City Sales Rank measure verified -->
