@@ -4,5 +4,61 @@
   "displayName": "Page 1",
   "displayOption": "FitToPage",
   "height": 1080,
-  "width": 1920
+  "width": 1920,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "63aac6e7b9a5e5cbc6d2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact_Sales"
+              }
+            },
+            "Property": "item"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "9fe07c598d37b30199bc",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_Date"
+              }
+            },
+            "Property": "Date"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "4c03e040cca1e6373aa9",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "c837373f440ef6970962",
+        "boundFilter": "9fe07c598d37b30199bc",
+        "asAggregation": true,
+        "qnaSingleSelectRequired": false,
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_Date"
+              }
+            },
+            "Property": "Date"
+          }
+        }
+      }
+    ]
+  }
 }
