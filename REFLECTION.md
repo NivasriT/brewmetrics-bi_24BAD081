@@ -1,0 +1,7 @@
+# Project Reflection — BrewMetrics BI
+
+Working on this version-controlled Power BI project provided valuable experience in building analytics solutions using modern software engineering practices[cite: 1]. Rather than saving a monolithic `.pbix` file at the end of development, storing the data model using Power BI Project (`.pbip`) format enabled granular Git tracking across schema changes, TMDL files, and measure definitions[cite: 1, 2].
+
+GitHub Copilot served as an effective coding assistant during DAX development, though critical oversight was required[cite: 1, 6]. While Copilot accurately identified required time-intelligence and ranking logic patterns, its initial suggestions frequently contained subtle issues—such as using `ALL()` instead of `ALLSELECTED()` for running totals, hardcoding inline row aggregations rather than reusing base measures, and defaulting to row-level averages for basket size calculations[cite: 4]. Documenting these corrections in `NOTES.md` reinforced a deeper understanding of DAX filter contexts[cite: 1, 4].
+
+The step-by-step commit workflow fundamentally improved my development discipline[cite: 1]. Committing isolated milestones—from star schema creation to individual DAX measures—forced rigorous testing at each stage rather than debugging multiple components simultaneously at completion[cite: 1, 6]. Overall, this approach ensured a transparent, auditable, and production-ready BI solution[cite: 8].
