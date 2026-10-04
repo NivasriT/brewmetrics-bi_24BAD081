@@ -30,3 +30,5 @@ Copilot averaged row-level sales_amount, which calculates sales per line-item in
 <!-- Commit checkpoint: Running Total Sales measure verified -->
 
 <!-- Commit checkpoint: City Sales Rank measure verified -->
+
+<!-- Commit checkpoint: City Sales Rank measure verified -->
